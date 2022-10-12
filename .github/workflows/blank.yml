@@ -1,10 +1,12 @@
-name: Branch Deleted
-on: delete
+name: Create/update tag
+on: workflow_dispatch
 jobs:
-  delete:
-    if: github.event.ref_type == 'branch'
+  create-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Clean up
-        run: |
-          echo "Clean up for branch ${{ github.event.ref }}"
+      - uses: actions/checkout@v3
+      - uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "latest"
+          message: "Latest release"
+          force_push_tag: "true"
