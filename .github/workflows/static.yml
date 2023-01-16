@@ -44,14 +44,7 @@ jobs:
           chmod -c -R +rX "$input_path" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
           done
-          tar \
-            --dereference --hard-dereference \
-            --directory "$input_path" \
-            -cvf "${{ runner.temp }}/artifact.tar" \
-            --exclude=.git \
-            --exclude=.github \
-            --include=*.yaml
-            .
+          find "$input_path" -name "*.yaml" | tar -cvf "${{ runner.temp }}/artifact.tar" -T -
       - name: Upload artifact
         uses: actions/upload-artifact@main
         with:
