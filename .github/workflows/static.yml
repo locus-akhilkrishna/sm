@@ -35,7 +35,7 @@ jobs:
       - name: Archive artifact
         shell: sh
         run: |
-          input_path="."
+          input_path="test"
           chmod -c -R +rX "$input_path" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
           done
