@@ -47,10 +47,10 @@ jobs:
           tar \
             --dereference --hard-dereference \
             --directory "$input_path" \
-            -cvf "$RUNNER_TEMP/artifact.tar" \
+            -cvf "${{ runner.temp }}/artifact.tar" \
             --exclude=.git \
             --exclude=.github \
-            --include='*.yaml'
+            --include=*.yaml
             .
       - name: Upload artifact
         uses: actions/upload-artifact@main
