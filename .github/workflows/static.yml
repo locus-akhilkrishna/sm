@@ -37,6 +37,27 @@ jobs:
         with:
           # Upload entire repository
           path: '.'
+      - name: Archive artifact
+        shell: sh
+        run: |
+          input_path="."
+          chmod -c -R +rX "$input_path" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+          tar \
+            --dereference --hard-dereference \
+            --directory "$input_path" \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            --include='*.yaml'
+            .
+      - name: Upload artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
